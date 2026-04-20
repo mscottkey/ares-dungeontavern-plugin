@@ -2,11 +2,11 @@
 
   <div class="hg-hud-header">
     <h1>Tavern Night</h1>
-    <span class="hg-status-badge hg-status-{{model.status}}">{{model.status}}</span>
-    <span class="hg-vibe-pool">Vibe Pool: {{model.vibe_pool}}</span>
+    <span class="hg-status-badge hg-status-{{this.model.status}}">{{this.model.status}}</span>
+    <span class="hg-vibe-pool">Vibe Pool: {{this.model.vibe_pool}}</span>
   </div>
 
-  {{#if (eq model.status "active")}}
+  {{#if (eq this.model.status "active")}}
 
   {{! ── Personal Status ── }}
   <div class="hg-personal-section">
@@ -14,26 +14,26 @@
     <div class="hg-track-row">
       <span class="hg-track-label">Stress</span>
       <div class="hg-pip-track">
-        {{#each model.stress_pips as |pip|}}
+        {{#each this.model.stress_pips as |pip|}}
         <div class="hg-pip {{if pip.filled 'filled stress'}}"></div>
         {{/each}}
       </div>
-      <span class="hg-track-count">{{model.viewer_stress}}/{{model.stress_max}}</span>
+      <span class="hg-track-count">{{this.model.viewer_stress}}/{{this.model.stress_max}}</span>
     </div>
     <div class="hg-track-row">
       <span class="hg-track-label">Inebriation</span>
       <div class="hg-pip-track">
-        {{#each model.ineb_pips as |pip|}}
+        {{#each this.model.ineb_pips as |pip|}}
         <div class="hg-pip {{if pip.filled 'filled ineb'}}"></div>
         {{/each}}
       </div>
       <span class="hg-track-count">
-        {{model.viewer_inebriation}}/{{model.viewer_ineb_limit}}
+        {{this.model.viewer_inebriation}}/{{this.model.viewer_ineb_limit}}
       </span>
     </div>
     <div class="hg-track-row">
       <span class="hg-track-label">Vibe</span>
-      <span class="hg-vibe-value">{{model.viewer_vibe}}</span>
+      <span class="hg-vibe-value">{{this.model.viewer_vibe}}</span>
     </div>
   </div>
 
@@ -57,7 +57,7 @@
   </div>
 
   {{! ── Active Leads ── }}
-  {{#if model.viewer_leads.length}}
+  {{#if this.model.viewer_leads.length}}
   <div class="hg-leads-section">
     <h2>Your Active Leads</h2>
     <table class="table">
@@ -69,7 +69,7 @@
         </tr>
       </thead>
       <tbody>
-        {{#each model.viewer_leads as |lead|}}
+        {{#each this.model.viewer_leads as |lead|}}
         <tr>
           <td>{{lead.title}}</td>
           <td>{{lead.clues_gathered}}/{{lead.clues_needed}}</td>
@@ -98,7 +98,7 @@
         </tr>
       </thead>
       <tbody>
-        {{#each model.participants as |p|}}
+        {{#each this.model.participants as |p|}}
         <tr>
           <td>{{p.name}}</td>
           <td>{{p.inebriation}}/{{p.ineb_limit}}</td>
@@ -111,7 +111,7 @@
   </div>
 
   {{! ── GM Controls ── }}
-  {{#if model.is_admin}}
+  {{#if this.model.is_admin}}
   <div class="hg-gm-section">
     <h2>GM Controls</h2>
     <button class="btn btn-danger" {{action 'closeNight' }}>
@@ -121,7 +121,7 @@
   {{/if}}
 
   {{else}}
-  <p>This tavern night is {{model.status}}.</p>
+  <p>This tavern night is {{this.model.status}}.</p>
   {{/if}}
 
 </div>

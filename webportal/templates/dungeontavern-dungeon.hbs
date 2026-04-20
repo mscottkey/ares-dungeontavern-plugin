@@ -2,22 +2,22 @@
 
   {{! ── Header ── }}
   <div class="hg-hud-header">
-    {{#if model.contract}}
-    <h1>{{model.contract.title}}</h1>
-    <span class="hg-modifier-badge">{{model.contract.modifier}}</span>
-    <p class="hg-contract-desc">{{model.contract.description}}</p>
+    {{#if this.model.contract}}
+    <h1>{{this.model.contract.title}}</h1>
+    <span class="hg-modifier-badge">{{this.model.contract.modifier}}</span>
+    <p class="hg-contract-desc">{{this.model.contract.description}}</p>
     {{else}}
     <h1>Dungeon Run — Pending</h1>
     <p>Select a contract below to begin.</p>
     {{/if}}
-    <span class="hg-status-badge hg-status-{{model.status}}">{{model.status}}</span>
+    <span class="hg-status-badge hg-status-{{this.model.status}}">{{this.model.status}}</span>
   </div>
 
   {{! ── Contract Selection (pending state only) ── }}
-  {{#if (eq model.status "pending")}}
+  {{#if (eq this.model.status "pending")}}
   <div class="hg-contract-select">
     <h2>Available Contracts</h2>
-    {{#if model.posted_contracts.length}}
+    {{#if this.model.posted_contracts.length}}
     <table class="table">
       <thead>
         <tr>
@@ -27,7 +27,7 @@
         </tr>
       </thead>
       <tbody>
-        {{#each model.posted_contracts as |contract|}}
+        {{#each this.model.posted_contracts as |contract|}}
         <tr>
           <td>
             <strong>{{contract.title}}</strong>
@@ -50,21 +50,21 @@
   {{/if}}
 
   {{! ── Active Run ── }}
-  {{#if (eq model.status "active")}}
+  {{#if (eq this.model.status "active")}}
   <div class="hg-hud-body">
 
     {{! Doom Clock }}
     <div class="hg-doom-section">
       <h2>Doom Clock</h2>
       <div class="hg-doom-track">
-        {{#each model.doom_pips as |pip|}}
+        {{#each this.model.doom_pips as |pip|}}
         <div class="hg-doom-pip {{if pip.filled 'filled'}} {{if pip.threshold pip.threshold}}">
           {{pip.label}}
         </div>
         {{/each}}
       </div>
-      <div class="hg-doom-status hg-doom-{{model.doom_label}}">
-        {{model.doom_level}}/10 — {{model.doom_label}}
+      <div class="hg-doom-status hg-doom-{{this.model.doom_label}}">
+        {{this.model.doom_level}}/10 — {{this.model.doom_label}}
       </div>
     </div>
 
@@ -72,11 +72,11 @@
     <div class="hg-progress-section">
       <h2>Progress</h2>
       <div class="hg-progress-track">
-        {{#each model.progress_pips as |pip|}}
+        {{#each this.model.progress_pips as |pip|}}
         <div class="hg-progress-pip {{if pip.filled 'filled'}}"></div>
         {{/each}}
       </div>
-      <div class="hg-progress-label">{{model.progress}}/{{model.progress_max}}</div>
+      <div class="hg-progress-label">{{this.model.progress}}/{{this.model.progress_max}}</div>
     </div>
 
     {{! Party Roster }}
@@ -91,7 +91,7 @@
           </tr>
         </thead>
         <tbody>
-          {{#each model.participants as |p|}}
+          {{#each this.model.participants as |p|}}
           <tr>
             <td>{{p.name}}</td>
             <td>{{p.role}}</td>
@@ -115,7 +115,7 @@
       <div class="hg-move-controls">
         <select onchange={{action 'selectMove' value="target.value" }}>
           <option value="">— Select a Move —</option>
-          {{#each model.viewer_moves as |move|}}
+          {{#each this.model.viewer_moves as |move|}}
           <option value="{{move.name}}">{{move.name}} (+{{move.stat}})</option>
           {{/each}}
         </select>
@@ -124,7 +124,7 @@
         </button>
       </div>
       {{#if selectedMove}}
-      {{#each model.viewer_moves as |move|}}
+      {{#each this.model.viewer_moves as |move|}}
       {{#if (eq move.name selectedMove)}}
       <p class="hg-move-desc">{{move.desc}}</p>
       {{/if}}
@@ -133,7 +133,7 @@
     </div>
 
     {{! GM Controls }}
-    {{#if model.is_admin}}
+    {{#if this.model.is_admin}}
     <div class="hg-gm-section">
       <h2>GM Controls</h2>
       <div class="hg-gm-buttons">
@@ -150,11 +150,11 @@
   {{/if}}
 
   {{! ── Complete / Failed Summary ── }}
-  {{#if (or (eq model.status "complete") (eq model.status "failed"))}}
+  {{#if (or (eq this.model.status "complete") (eq this.model.status "failed"))}}
   <div class="hg-run-summary">
-    <h2>Run {{capitalize model.status}}</h2>
-    <p>Doom reached: {{model.doom_level}}/10</p>
-    <p>Progress: {{model.progress}}/{{model.progress_max}}</p>
+    <h2>Run {{capitalize this.model.status}}</h2>
+    <p>Doom reached: {{this.model.doom_level}}/10</p>
+    <p>Progress: {{this.model.progress}}/{{this.model.progress_max}}</p>
   </div>
   {{/if}}
 

@@ -3,7 +3,7 @@
 
   <div class="contracts-section">
     <h2>Available Contracts</h2>
-    {{#if model.contracts.length}}
+    {{#if this.model.contracts.length}}
     <table class="table">
       <thead>
         <tr>
@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        {{#each model.contracts as |contract|}}
+        {{#each this.model.contracts as |contract|}}
         <tr>
           <td>
             <strong>{{contract.title}}</strong>
