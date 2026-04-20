@@ -1,14 +1,14 @@
-# Heroes Guild Plugin
+# Dungeon Tavern Plugin
 
-This plugin provides the Heroes Guild system for AresMUSH, including job boards, tavern nights, dungeon runs, and character extensions.
+This plugin provides the Dungeon Tavern system for AresMUSH, including job boards, tavern nights, dungeon runs, and character extensions.
 
 ## Prerequisites
 
 **Requires `ares-pbta-plugin` to be installed first.**
 
-The Heroes Guild plugin works in tandem with the PbtA plugin, but it does not include the PbtA core files directly. They must be installed and configured prior to using this plugin.
+The Dungeon Tavern plugin works in tandem with the Powered by the Apocalypse Game system (PbtA) plugin, but it does not include the PbtA core files directly. They must be installed and configured prior to using this plugin.
 
-## What Heroes Guild Adds
+## What Dungeon Tavern Adds
 
 This plugin adds the following features on top of a standard AresMUSH installation and the PbtA plugin:
 

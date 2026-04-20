@@ -165,7 +165,7 @@ module AresMUSH
         end
 
         client.emit_success t('dungeontavern.lead_close_success',
-                                title: lead.title, outcome: outcome_text)
+                               title: lead.title, outcome: outcome_text)
       end
 
       def convert_lead(lead)

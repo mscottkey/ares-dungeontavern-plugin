@@ -38,13 +38,13 @@ module AresMUSH
           new_stress = [enactor.pbta_stress.to_i - 2, 0].max
           enactor.update(pbta_stress: new_stress)
           enactor.room.emit t('dungeontavern.carouse_success',
-                                name: enactor.name, stress: 2, vibe: 2)
+                               name: enactor.name, stress: 2, vibe: 2)
         when :weak
           participant.update(vibe: participant.vibe.to_i + 1)
           new_stress = [enactor.pbta_stress.to_i - 1, 0].max
           enactor.update(pbta_stress: new_stress)
           enactor.room.emit t('dungeontavern.carouse_partial',
-                                name: enactor.name, stress: 1)
+                               name: enactor.name, stress: 1)
         when :miss
           enactor.room.emit t('dungeontavern.carouse_miss', name: enactor.name)
           tavern_fallout(enactor)

@@ -14,4 +14,4 @@ Rolls 2d6 + Heart. Gimmick bonuses apply if relevant.
 - **7-9** Clear 1 Stress, gain 1 Vibe — but you have to make a choice.
 - **6-** Tavern Fallout. Mark XP.
 
-**See also:** +imbibe, +sober, heroesguild-tavern-hud
+**See also:** +imbibe, +sober, dungeontavern-tavern-hud

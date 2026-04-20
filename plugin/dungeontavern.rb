@@ -37,9 +37,9 @@ module AresMUSH
     end
 
     def self.get_web_request_handler(request)
-      case request.cmd
+      case request.cmd  
       when "dtGuildBoard",
-           "dtJobBoard"                    then return GuildBoardRequestHandler
+           "dungeontavernJobBoard"          then return GuildBoardRequestHandler
       when "dtStartTavernNight"           then return StartTavernNightRequestHandler
       when "dtCloseTavernNight"           then return CloseTavernNightRequestHandler
       when "dtTavernNight"                then return TavernNightRequestHandler

@@ -106,7 +106,7 @@ module AresMUSH
       end
     end
 
-    # Backward-compat alias — existing calls to heroesguildJobBoard still work.
+    # Backward-compat alias — existing calls to dungeontavernJobBoard still work.
     JobBoardRequestHandler = GuildBoardRequestHandler
 
   end
