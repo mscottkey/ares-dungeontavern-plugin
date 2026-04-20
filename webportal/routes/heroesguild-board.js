@@ -5,14 +5,14 @@ export default Route.extend({
   gameApi: service(),
 
   model() {
-    return this.gameApi.requestOne('hgGuildBoard', {}, null);
+    return this.gameApi.requestOne('dtGuildBoard', {}, null);
   },
 
   setupController(controller, model) {
     this._super(controller, model);
     // Refresh every 60 seconds — board changes slowly
     let poll = setInterval(() => {
-      this.gameApi.requestOne('hgGuildBoard', {}, null)
+      this.gameApi.requestOne('dtGuildBoard', {}, null)
         .then((data) => controller.set('model', data));
     }, 60000);
     controller.set('pollTimer', poll);

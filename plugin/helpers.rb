@@ -1,5 +1,5 @@
 module AresMUSH
-  module HeroesGuild
+  module DungeonTavern
 
     # ── Container Lookups ────────────────────────────────────────────────────
 
@@ -199,7 +199,7 @@ module AresMUSH
         id: run.id,
         status: run.status,
         doom_level: run.doom_level.to_i,
-        doom_label: HeroesGuild.doom_label(run.doom_level.to_i),
+        doom_label: DungeonTavern.doom_label(run.doom_level.to_i),
         doom_pips: doom_pips,
         progress: run.progress_boxes.to_i,
         progress_max: run.progress_max.to_i,
@@ -228,7 +228,7 @@ module AresMUSH
         {
           name: char.name,
           inebriation: p.inebriation.to_i,
-          ineb_limit: HeroesGuild.ineb_limit(char),
+          ineb_limit: DungeonTavern.ineb_limit(char),
           vibe: p.vibe.to_i,
           stress: char.pbta_stress.to_i
         }
@@ -241,7 +241,7 @@ module AresMUSH
       end
 
       viewer_ineb   = participant ? participant.inebriation.to_i : 0
-      ineb_limit    = HeroesGuild.ineb_limit(viewer)
+      ineb_limit    = DungeonTavern.ineb_limit(viewer)
 
       stress_pips = (1..stress_max).map { |i| { filled: i <= viewer.pbta_stress.to_i } }
       ineb_pips   = (1..ineb_limit).map { |i| { filled: i <= viewer_ineb } }

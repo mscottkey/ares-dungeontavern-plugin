@@ -14,13 +14,13 @@ require_relative 'web/jobboard_web'
 require_relative 'web/container_web'
 
 module AresMUSH
-  module HeroesGuild
+  module DungeonTavern
     def self.plugin_dir
       File.dirname(__FILE__)
     end
 
     def self.shortcuts
-      Global.read_config("heroesguild", "shortcuts")
+      Global.read_config("dungeontavern", "shortcuts")
     end
 
     def self.get_cmd_handler(client, cmd, enactor)
@@ -38,19 +38,19 @@ module AresMUSH
 
     def self.get_web_request_handler(request)
       case request.cmd
-      when "hgGuildBoard",
-           "heroesguildJobBoard"          then return GuildBoardRequestHandler
-      when "hgStartTavernNight"           then return StartTavernNightRequestHandler
-      when "hgCloseTavernNight"           then return CloseTavernNightRequestHandler
-      when "hgTavernNight"                then return TavernNightRequestHandler
-      when "hgTavernAction"               then return TavernActionRequestHandler
-      when "hgAddClue"                    then return AddClueRequestHandler
-      when "hgStartDungeonRun"            then return StartDungeonRunRequestHandler
-      when "hgDungeonRun"                 then return DungeonRunRequestHandler
-      when "hgSelectContract"             then return SelectContractRequestHandler
-      when "hgEndDungeonRun"              then return EndDungeonRunRequestHandler
-      when "hgDungeonGmAction"            then return DungeonGmActionRequestHandler
-      when "hgHudRollMove"                then return HudRollMoveRequestHandler
+      when "dtGuildBoard",
+           "dtJobBoard"                    then return GuildBoardRequestHandler
+      when "dtStartTavernNight"           then return StartTavernNightRequestHandler
+      when "dtCloseTavernNight"           then return CloseTavernNightRequestHandler
+      when "dtTavernNight"                then return TavernNightRequestHandler
+      when "dtTavernAction"               then return TavernActionRequestHandler
+      when "dtAddClue"                    then return AddClueRequestHandler
+      when "dtStartDungeonRun"            then return StartDungeonRunRequestHandler
+      when "dtDungeonRun"                 then return DungeonRunRequestHandler
+      when "dtSelectContract"             then return SelectContractRequestHandler
+      when "dtEndDungeonRun"              then return EndDungeonRunRequestHandler
+      when "dtDungeonGmAction"            then return DungeonGmActionRequestHandler
+      when "dtHudRollMove"                then return HudRollMoveRequestHandler
       end
       nil
     end

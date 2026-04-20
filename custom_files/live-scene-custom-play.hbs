@@ -1,23 +1,39 @@
-{{#if this.custom.heroesguild.dungeon_run_id}}
+{{#if this.custom.dungeontavern.dungeon_run_id}}
   <li>
-    <a href="/heroesguild/dungeon/{{this.custom.heroesguild.dungeon_run_id}}"
-       target="_blank">
+    <a href="/dungeontavern/dungeon/{{this.custom.dungeontavern.dungeon_run_id}}"
+       target="_blank" class="dropdown-item">
       Dungeon HUD ↗
     </a>
   </li>
-  <li><a href="#" {{action 'hgEndDungeonRun'}}>End Dungeon Run</a></li>
+  <li>
+    <a href="#" {{action 'dtEndDungeonRun'}} class="dropdown-item">
+      End Dungeon Run
+    </a>
+  </li>
 {{else}}
-  <li><a href="#" {{action 'hgStartDungeonRun'}}>Start Dungeon Run</a></li>
+  <li>
+    <a href="#" {{action 'dtStartDungeonRun'}} class="dropdown-item">
+      Start Dungeon Run
+    </a>
+  </li>
 {{/if}}
 
-{{#if this.custom.heroesguild.tavern_night_id}}
+{{#if this.custom.dungeontavern.tavern_night_id}}
   <li>
-    <a href="/heroesguild/tavern/{{this.custom.heroesguild.tavern_night_id}}"
-       target="_blank">
+    <a href="/dungeontavern/tavern/{{this.custom.dungeontavern.tavern_night_id}}"
+       target="_blank" class="dropdown-item">
       Tavern HUD ↗
     </a>
   </li>
-  <li><a href="#" {{action 'hgCloseTavernNight'}}>Close Tavern Night</a></li>
+  <li>
+    <a href="#" {{action 'dtCloseTavernNight'}} class="dropdown-item">
+      Close Tavern Night
+    </a>
+  </li>
 {{else}}
-  <li><a href="#" {{action 'hgStartTavernNight'}}>Open Tavern Night</a></li>
+  <li>
+    <a href="#" {{action 'dtStartTavernNight'}} class="dropdown-item">
+      Open Tavern Night
+    </a>
+  </li>
 {{/if}}

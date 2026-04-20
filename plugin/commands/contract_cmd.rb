@@ -1,5 +1,5 @@
 module AresMUSH
-  module HeroesGuild
+  module DungeonTavern
     class ContractCmd
       include CommandHandler
 

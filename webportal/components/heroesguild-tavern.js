@@ -6,7 +6,7 @@ export default Component.extend({
   flashMessages: service(),
 
   doAction(actionName) {
-    this.gameApi.requestOne('hgTavernAction',
+    this.gameApi.requestOne('dtTavernAction',
       { night_id: this.model.id, action: actionName }, null)
       .then((data) => {
         if (data.error) {
@@ -25,7 +25,7 @@ export default Component.extend({
     doInvestigate() { this.doAction('investigate'); },
 
     addClue(leadId) {
-      this.gameApi.requestOne('hgAddClue', { lead_id: leadId }, null)
+      this.gameApi.requestOne('dtAddClue', { lead_id: leadId }, null)
         .then((data) => {
           if (data.error) {
             this.flashMessages.danger(data.error);
@@ -41,7 +41,7 @@ export default Component.extend({
     },
 
     closeNight() {
-      this.gameApi.requestOne('hgCloseTavernNight',
+      this.gameApi.requestOne('dtCloseTavernNight',
         { night_id: this.model.id }, null)
         .then((result) => {
           if (result.error) {

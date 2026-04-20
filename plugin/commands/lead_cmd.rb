@@ -1,5 +1,5 @@
 module AresMUSH
-  module HeroesGuild
+  module DungeonTavern
     class LeadCmd
       include CommandHandler
 
@@ -34,44 +34,44 @@ module AresMUSH
 
       def do_investigate
         # Check player cap
-        player_cap  = Global.read_config("heroesguild", "lead_player_cap").to_i
+        player_cap  = Global.read_config("dungeontavern", "lead_player_cap").to_i
         player_open = AresMUSH::PbtaLead.find(character_id: enactor.id, status: "open").count
         if player_open >= player_cap
-          client.emit_failure t('heroesguild.investigate_player_cap')
+          client.emit_failure t('dungeontavern.investigate_player_cap')
           return
         end
 
         # Check global cap
-        global_cap  = Global.read_config("heroesguild", "lead_global_cap").to_i
+        global_cap  = Global.read_config("dungeontavern", "lead_global_cap").to_i
         global_open = AresMUSH::PbtaLead.find(status: "open").count
         if global_open >= global_cap
-          client.emit_failure t('heroesguild.investigate_global_cap')
+          client.emit_failure t('dungeontavern.investigate_global_cap')
           return
         end
 
         room_name = enactor.room ? enactor.room.name : ""
-        stat_val = HeroesGuild.stat_value(enactor, "cunning",
+        stat_val = DungeonTavern.stat_value(enactor, "cunning",
                                           move_name: "Investigate",
                                           room_name: room_name)
         result = Engine.roll(stat_val)
         enactor.room.emit Engine.format_roll(enactor.name, "Investigate", "cunning", result)
 
         if result[:tier] == :miss
-          run = HeroesGuild.active_dungeon_run(enactor.room)
+          run = DungeonTavern.active_dungeon_run(enactor.room)
           doom_level = run ? run.doom_level.to_i : 0
           data = Engine.consequence_data(enactor, result, doom_level)
           if data[:xp_bump]
-            xp_msg = t('heroesguild.xp_gained', total: data[:new_xp])
-            enactor.room.emit t('heroesguild.miss', xp_msg: xp_msg)
-            client.emit t('heroesguild.advance_ready', name: enactor.name) if data[:advance_ready]
+            xp_msg = t('dungeontavern.xp_gained', total: data[:new_xp])
+            enactor.room.emit t('dungeontavern.miss', xp_msg: xp_msg)
+            client.emit t('dungeontavern.advance_ready', name: enactor.name) if data[:advance_ready]
           end
           if run && run.status == "active"
             doom_data = Engine.advance_doom(run)
-            enactor.room.emit "%xr#{t('heroesguild.doom_increased', level: doom_data[:new_doom])}%xn"
+            enactor.room.emit "%xr#{t('dungeontavern.doom_increased', level: doom_data[:new_doom])}%xn"
             case doom_data[:threshold]
-            when :alert   then enactor.room.emit "%xr#{t('heroesguild.doom_alert',   room: room_name)}%xn"
-            when :hostile then enactor.room.emit "%xr#{t('heroesguild.doom_hostile', room: room_name)}%xn"
-            when :lethal  then enactor.room.emit "%xr#{t('heroesguild.doom_lethal',  room: room_name)}%xn"
+            when :alert   then enactor.room.emit "%xr#{t('dungeontavern.doom_alert',   room: room_name)}%xn"
+            when :hostile then enactor.room.emit "%xr#{t('dungeontavern.doom_hostile', room: room_name)}%xn"
+            when :lethal  then enactor.room.emit "%xr#{t('dungeontavern.doom_lethal',  room: room_name)}%xn"
             end
           end
         else
@@ -80,9 +80,9 @@ module AresMUSH
           lead = AresMUSH::PbtaLead.create(title: lead_info[0], description: lead_info[1],
                                             status: "open", clues_needed: clues,
                                             character: enactor)
-          job_id = HeroesGuild.create_lead_job(lead, enactor)
+          job_id = DungeonTavern.create_lead_job(lead, enactor)
           lead.update(job_id: job_id) if job_id
-          enactor.room.emit t('heroesguild.lead_generated', name: enactor.name, desc: lead.title)
+          enactor.room.emit t('dungeontavern.lead_generated', name: enactor.name, desc: lead.title)
           enactor.room.emit "%xy(Lead requires #{clues} clue(s) to convert)%xn"
           if result[:tier] == :weak
             enactor.room.emit "%xr[COMPLICATION] You also drew unwanted attention while asking around.%xn"
@@ -147,16 +147,16 @@ module AresMUSH
 
         lead = AresMUSH::PbtaLead[id]
         unless lead
-          client.emit_failure t('heroesguild.lead_close_not_found', id: id)
+          client.emit_failure t('dungeontavern.lead_close_not_found', id: id)
           return
         end
 
         unless lead.status == "open"
-          client.emit_failure t('heroesguild.lead_close_already_closed', id: id)
+          client.emit_failure t('dungeontavern.lead_close_already_closed', id: id)
           return
         end
 
-        result = HeroesGuild.close_lead(lead, enactor, reason: :staff)
+        result = DungeonTavern.close_lead(lead, enactor, reason: :staff)
 
         outcome_text = case result[:outcome]
         when :converted then "Converted to contract: #{result[:contract].title}"
@@ -164,8 +164,8 @@ module AresMUSH
         when :removed   then "Removed — no progress made"
         end
 
-        client.emit_success t('heroesguild.lead_close_success',
-                               title: lead.title, outcome: outcome_text)
+        client.emit_success t('dungeontavern.lead_close_success',
+                                title: lead.title, outcome: outcome_text)
       end
 
       def convert_lead(lead)
@@ -174,10 +174,10 @@ module AresMUSH
         contract = AresMUSH::DungeonContract.create(title: lead.title, description: lead.description,
                                                      modifier: mod, character: lead.character,
                                                      status: "posted")
-        enactor.room.emit t('heroesguild.lead_converted', title: contract.title)
+        enactor.room.emit t('dungeontavern.lead_converted', title: contract.title)
         enactor.room.emit "%xcThe dungeon has a modifier: #{mod}%xn"
 
-        HeroesGuild.post_lead_job_comment(
+        DungeonTavern.post_lead_job_comment(
           lead,
           Game.master.system_character,
           "This lead has been converted to a contract: #{contract.title}\n" \

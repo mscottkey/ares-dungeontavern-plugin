@@ -1,5 +1,5 @@
 module AresMUSH
-  module HeroesGuild
+  module DungeonTavern
     class DungeonCmd
       include CommandHandler
 
@@ -31,7 +31,7 @@ module AresMUSH
       end
 
       def do_doom
-        run = HeroesGuild.active_dungeon_run(enactor.room)
+        run = DungeonTavern.active_dungeon_run(enactor.room)
         unless run && run.status == "active"
           client.emit_failure "No active dungeon run in this room."
           return
@@ -39,11 +39,11 @@ module AresMUSH
 
         doom_data = Engine.advance_doom(run)
         room_name = enactor.room.name
-        enactor.room.emit "%xr#{t('heroesguild.doom_increased', level: doom_data[:new_doom])}%xn"
+        enactor.room.emit "%xr#{t('dungeontavern.doom_increased', level: doom_data[:new_doom])}%xn"
         case doom_data[:threshold]
-        when :alert   then enactor.room.emit "%xr#{t('heroesguild.doom_alert',   room: room_name)}%xn"
-        when :hostile then enactor.room.emit "%xr#{t('heroesguild.doom_hostile', room: room_name)}%xn"
-        when :lethal  then enactor.room.emit "%xr#{t('heroesguild.doom_lethal',  room: room_name)}%xn"
+        when :alert   then enactor.room.emit "%xr#{t('dungeontavern.doom_alert',   room: room_name)}%xn"
+        when :hostile then enactor.room.emit "%xr#{t('dungeontavern.doom_hostile', room: room_name)}%xn"
+        when :lethal  then enactor.room.emit "%xr#{t('dungeontavern.doom_lethal',  room: room_name)}%xn"
         end
       end
 
@@ -62,7 +62,7 @@ module AresMUSH
       end
 
       def do_progress
-        run = HeroesGuild.active_dungeon_run(enactor.room)
+        run = DungeonTavern.active_dungeon_run(enactor.room)
         unless run && run.status == "active"
           client.emit_failure "No active dungeon run in this room."
           return
@@ -81,7 +81,7 @@ module AresMUSH
       end
 
       def do_end
-        run = HeroesGuild.active_dungeon_run(enactor.room)
+        run = DungeonTavern.active_dungeon_run(enactor.room)
         unless run
           client.emit_failure "No active dungeon run in this room."
           return

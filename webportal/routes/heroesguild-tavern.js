@@ -5,7 +5,7 @@ export default Route.extend({
   gameApi: service(),
 
   model(params) {
-    return this.gameApi.requestOne('hgTavernNight', { id: params.night_id }, null);
+    return this.gameApi.requestOne('dtTavernNight', { id: params.night_id }, null);
   },
 
   setupController(controller, model) {
@@ -13,7 +13,7 @@ export default Route.extend({
     controller.set('nightId', model.id);
 
     const poll = setInterval(() => {
-      this.gameApi.requestOne('hgTavernNight', { id: model.id }, null)
+      this.gameApi.requestOne('dtTavernNight', { id: model.id }, null)
         .then((data) => { controller.set('model', data); });
     }, 15000);
     controller.set('pollTimer', poll);

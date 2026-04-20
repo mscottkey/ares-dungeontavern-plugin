@@ -1,5 +1,5 @@
 en:
-  heroesguild:
+  dungeontavern:
     lead_generated: "%{name} picks up a lead: %{desc}"
     lead_converted: "The lead solidifies into a contract: %{title}"
     carouse_success: "%{name} has a great night. Clear %{stress} Stress and gain %{vibe} Vibe."

@@ -5,6 +5,6 @@ import RSVP from 'rsvp';
 export default Route.extend({
   gameApi: service(),
   model() {
-    return this.gameApi.requestOne('heroesguildJobBoard', {}, null);
+    return this.gameApi.requestOne('dtJobBoard', {}, null);
   }
 });

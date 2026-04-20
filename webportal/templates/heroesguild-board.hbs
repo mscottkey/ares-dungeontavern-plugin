@@ -1,6 +1,6 @@
-<div class="container heroesguild-board">
+<div class="container dungeontavern-board">
 
-  <h1>Heroes Guild — The Board</h1>
+  <h1>Dungeon Tavern — The Board</h1>
 
   {{! ── Active Runs ── }}
   {{#if model.active_runs.length}}
@@ -34,7 +34,7 @@
               <td>{{run.progress}}/{{run.progress_max}}</td>
               <td>{{run.party}}</td>
               <td>
-                <a href="/heroesguild/dungeon/{{run.id}}" class="btn btn-sm btn-default">
+                <a href="/dungeontavern/dungeon/{{run.id}}" class="btn btn-sm btn-default">
                   View HUD
                 </a>
               </td>

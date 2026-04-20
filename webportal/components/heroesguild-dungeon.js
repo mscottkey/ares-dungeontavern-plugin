@@ -12,7 +12,7 @@ export default Component.extend({
     },
 
     selectContract(contractId) {
-      this.gameApi.requestOne('hgSelectContract',
+      this.gameApi.requestOne('dtSelectContract',
         { run_id: this.model.id, contract_id: contractId }, null)
         .then((data) => {
           if (data.error) {
@@ -25,7 +25,7 @@ export default Component.extend({
 
     rollMove() {
       if (!this.selectedMove) return;
-      this.gameApi.requestOne('hgHudRollMove',
+      this.gameApi.requestOne('dtHudRollMove',
         { run_id: this.model.id, move_name: this.selectedMove }, null)
         .then((data) => {
           if (data.error) {
@@ -38,25 +38,25 @@ export default Component.extend({
     },
 
     advanceDoom() {
-      this.gameApi.requestOne('hgDungeonGmAction',
+      this.gameApi.requestOne('dtDungeonGmAction',
         { run_id: this.model.id, action: 'doom' }, null)
         .then((data) => { if (!data.error) this.set('model', data); });
     },
 
     randomThreat() {
-      this.gameApi.requestOne('hgDungeonGmAction',
+      this.gameApi.requestOne('dtDungeonGmAction',
         { run_id: this.model.id, action: 'threat' }, null)
         .then((data) => { if (!data.error) this.set('model', data); });
     },
 
     markProgress(boxes) {
-      this.gameApi.requestOne('hgDungeonGmAction',
+      this.gameApi.requestOne('dtDungeonGmAction',
         { run_id: this.model.id, action: 'progress', boxes: boxes }, null)
         .then((data) => { if (!data.error) this.set('model', data); });
     },
 
     endRun() {
-      this.gameApi.requestOne('hgEndDungeonRun',
+      this.gameApi.requestOne('dtEndDungeonRun',
         { run_id: this.model.id }, null)
         .then((result) => {
           if (result.error) {

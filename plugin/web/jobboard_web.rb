@@ -1,5 +1,5 @@
 module AresMUSH
-  module HeroesGuild
+  module DungeonTavern
 
     class GuildBoardRequestHandler
       def handle(request)
@@ -17,7 +17,7 @@ module AresMUSH
             end
           end
 
-          inactive = HeroesGuild.lead_inactive_days(lead)
+          inactive = DungeonTavern.lead_inactive_days(lead)
 
           {
             id:             lead.id,
@@ -54,7 +54,7 @@ module AresMUSH
             contract_title: run.contract ? run.contract.title : "Unnamed Run",
             modifier:       run.contract ? run.contract.modifier : nil,
             doom_level:     run.doom_level.to_i,
-            doom_label:     HeroesGuild.doom_label(run.doom_level.to_i),
+            doom_label:     DungeonTavern.doom_label(run.doom_level.to_i),
             progress:       run.progress_boxes.to_i,
             progress_max:   run.progress_max.to_i,
             party:          party
@@ -91,7 +91,7 @@ module AresMUSH
           end
         end
 
-        global_cap   = Global.read_config("heroesguild", "lead_global_cap").to_i
+        global_cap   = Global.read_config("dungeontavern", "lead_global_cap").to_i
         active_count = AresMUSH::PbtaLead.find(status: "open").count
 
         {

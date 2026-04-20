@@ -1,5 +1,5 @@
 module AresMUSH
-  module HeroesGuild
+  module DungeonTavern
 
     # POST: Start a TavernNight in the scene's room.
     class StartTavernNightRequestHandler
@@ -14,7 +14,7 @@ module AresMUSH
         room = scene.room
         return { error: "No room associated with this scene." } unless room
 
-        return { error: "A tavern night is already active here." } if HeroesGuild.active_tavern_night(room)
+        return { error: "A tavern night is already active here." } if DungeonTavern.active_tavern_night(room)
 
         night = AresMUSH::TavernNight.create(
           status: "active", room: room, scene: scene,
@@ -52,7 +52,7 @@ module AresMUSH
         night = AresMUSH::TavernNight[request.args[:id]]
         return { error: "Tavern night not found." } unless night
 
-        HeroesGuild.tavern_night_web_data(night, request.enactor)
+        DungeonTavern.tavern_night_web_data(night, request.enactor)
       end
     end
 
@@ -67,14 +67,14 @@ module AresMUSH
         return { error: "Tavern night not found." } unless night
         return { error: "Tavern night is closed." } unless night.status == "active"
 
-        participant = HeroesGuild.find_or_create_tavern_participant(night, char)
+        participant = DungeonTavern.find_or_create_tavern_participant(night, char)
         room        = night.room
 
         case request.args[:action]
 
         when "carouse"
           room_name = room ? room.name : ""
-          stat_val  = HeroesGuild.stat_value(char, "heart",
+          stat_val  = DungeonTavern.stat_value(char, "heart",
                                              move_name: "Carouse", room_name: room_name)
           result = Engine.roll(stat_val)
           room.emit Engine.format_roll(char.name, "Carouse", "heart", result) if room
@@ -103,7 +103,7 @@ module AresMUSH
           end
 
         when "imbibe"
-          limit     = HeroesGuild.ineb_limit(char)
+          limit     = DungeonTavern.ineb_limit(char)
           new_ineb  = participant.inebriation.to_i + 1
           new_vibe  = participant.vibe.to_i + 1
           participant.update(inebriation: new_ineb, vibe: new_vibe)
@@ -125,13 +125,13 @@ module AresMUSH
         when "sober"
           new_ineb = [participant.inebriation.to_i - 2, 0].max
           participant.update(inebriation: new_ineb)
-          limit = HeroesGuild.ineb_limit(char)
+          limit = DungeonTavern.ineb_limit(char)
           bar   = ("#" * new_ineb).ljust(limit, "-")
           room.emit "#{char.name} sobers up. [#{bar}] #{new_ineb}/#{limit}" if room
 
         when "investigate"
           room_name = room ? room.name : ""
-          stat_val  = HeroesGuild.stat_value(char, "cunning",
+          stat_val  = DungeonTavern.stat_value(char, "cunning",
                                              move_name: "Investigate", room_name: room_name)
           result = Engine.roll(stat_val)
           room.emit Engine.format_roll(char.name, "Investigate", "cunning", result) if room
@@ -151,7 +151,7 @@ module AresMUSH
             clues = result[:tier] == :strong ? 2 : 4
             lead  = AresMUSH::PbtaLead.create(title: seed[0], description: seed[1],
                                                status: "open", clues_needed: clues, character: char)
-            job_id = HeroesGuild.create_lead_job(lead, char)
+            job_id = DungeonTavern.create_lead_job(lead, char)
             lead.update(job_id: job_id) if job_id
             room.emit "#{char.name} picks up a lead: #{lead.title}" if room
             room.emit "%xy(Lead requires #{clues} clue(s))%xn" if room
@@ -159,7 +159,7 @@ module AresMUSH
           end
         end
 
-        HeroesGuild.tavern_night_web_data(night, char)
+        DungeonTavern.tavern_night_web_data(night, char)
       end
     end
 
@@ -177,7 +177,7 @@ module AresMUSH
 
         lead.update(clues_gathered: lead.clues_gathered.to_i + 1)
 
-        HeroesGuild.post_lead_job_comment(
+        DungeonTavern.post_lead_job_comment(
           lead,
           char,
           "#{char.name} has added a clue. (#{lead.clues_gathered}/#{lead.clues_needed})"
@@ -195,7 +195,7 @@ module AresMUSH
           )
           converted = true
 
-          HeroesGuild.post_lead_job_comment(
+          DungeonTavern.post_lead_job_comment(
             lead,
             Game.master.system_character,
             "This lead has been converted to a contract: #{contract.title}\n" \
@@ -207,7 +207,7 @@ module AresMUSH
                     .find { |n| n.status == "active" }
 
         if night
-          data = HeroesGuild.tavern_night_web_data(night, char)
+          data = DungeonTavern.tavern_night_web_data(night, char)
           data[:converted] = converted
           data
         else
@@ -229,7 +229,7 @@ module AresMUSH
         room = scene.room
         return { error: "No room associated with this scene." } unless room
 
-        return { error: "A dungeon run is already active here." } if HeroesGuild.active_dungeon_run(room)
+        return { error: "A dungeon run is already active here." } if DungeonTavern.active_dungeon_run(room)
 
         run = AresMUSH::DungeonRun.create(
           status: "pending", room: room, scene: scene,
@@ -250,7 +250,7 @@ module AresMUSH
         run = AresMUSH::DungeonRun[request.args[:id]]
         return { error: "Dungeon run not found." } unless run
 
-        HeroesGuild.dungeon_run_web_data(run, request.enactor)
+        DungeonTavern.dungeon_run_web_data(run, request.enactor)
       end
     end
 
@@ -275,7 +275,7 @@ module AresMUSH
         run.room.emit "%xr[DUNGEON RUN] Contract accepted: #{contract.title}. " \
                       "Modifier: #{contract.modifier}. The dungeon is waiting.%xn" if run.room
 
-        HeroesGuild.dungeon_run_web_data(run, request.enactor)
+        DungeonTavern.dungeon_run_web_data(run, request.enactor)
       end
     end
 
@@ -351,7 +351,7 @@ module AresMUSH
           end
         end
 
-        HeroesGuild.dungeon_run_web_data(run, request.enactor)
+        DungeonTavern.dungeon_run_web_data(run, request.enactor)
       end
     end
 
@@ -366,14 +366,14 @@ module AresMUSH
         return { error: "Dungeon run not found." } unless run
 
         move_name   = request.args[:move_name]
-        move_config = HeroesGuild.find_move(move_name)
+        move_config = DungeonTavern.find_move(move_name)
         return { error: "No move called '#{move_name}'." }                       unless move_config
-        return { error: "'#{move_name}' isn't in your playbook." }               unless HeroesGuild.char_has_move?(char, move_name)
+        return { error: "'#{move_name}' isn't in your playbook." }               unless DungeonTavern.char_has_move?(char, move_name)
 
         stat_name = move_config["stat"]
         room      = run.room
         room_name = room ? room.name : ""
-        stat_val  = HeroesGuild.stat_value(char, stat_name,
+        stat_val  = DungeonTavern.stat_value(char, stat_name,
                                            move_name: move_name, room_name: room_name)
 
         result = Engine.roll(stat_val)
@@ -402,7 +402,7 @@ module AresMUSH
           end
         end
 
-        HeroesGuild.dungeon_run_web_data(run, char)
+        DungeonTavern.dungeon_run_web_data(run, char)
       end
     end
 
