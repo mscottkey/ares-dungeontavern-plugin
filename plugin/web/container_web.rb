@@ -4,7 +4,7 @@ module AresMUSH
     # POST: Start a TavernNight in the scene's room.
     class StartTavernNightRequestHandler
       def handle(request)
-        error = WebHelpers.check_login(request)
+        error = AresMUSH::WebHelpers.check_login(request)
         return error if error
 
         char  = request.enactor
@@ -29,7 +29,7 @@ module AresMUSH
     # POST: Close an active TavernNight.
     class CloseTavernNightRequestHandler
       def handle(request)
-        error = WebHelpers.check_login(request)
+        error = AresMUSH::WebHelpers.check_login(request)
         return error if error
 
         char  = request.enactor
@@ -46,7 +46,7 @@ module AresMUSH
     # GET: Full TavernNight data for the HUD page.
     class TavernNightRequestHandler
       def handle(request)
-        error = WebHelpers.check_login(request)
+        error = AresMUSH::WebHelpers.check_login(request)
         return error if error
 
         night = AresMUSH::TavernNight[request.args[:id]]
@@ -59,7 +59,7 @@ module AresMUSH
     # POST: Tavern actions from the HUD — carouse, imbibe, sober, investigate.
     class TavernActionRequestHandler
       def handle(request)
-        error = WebHelpers.check_login(request)
+        error = AresMUSH::WebHelpers.check_login(request)
         return error if error
 
         char  = request.enactor
@@ -166,7 +166,7 @@ module AresMUSH
     # POST: Add a clue to a lead; auto-converts when threshold reached.
     class AddClueRequestHandler
       def handle(request)
-        error = WebHelpers.check_login(request)
+        error = AresMUSH::WebHelpers.check_login(request)
         return error if error
 
         char = request.enactor
@@ -219,7 +219,7 @@ module AresMUSH
     # POST: Start a DungeonRun in the scene's room (status: pending).
     class StartDungeonRunRequestHandler
       def handle(request)
-        error = WebHelpers.check_login(request)
+        error = AresMUSH::WebHelpers.check_login(request)
         return error if error
 
         char  = request.enactor
@@ -244,7 +244,7 @@ module AresMUSH
     # GET: Full DungeonRun data for the HUD page.
     class DungeonRunRequestHandler
       def handle(request)
-        error = WebHelpers.check_login(request)
+        error = AresMUSH::WebHelpers.check_login(request)
         return error if error
 
         run = AresMUSH::DungeonRun[request.args[:id]]
@@ -257,7 +257,7 @@ module AresMUSH
     # POST: Select a contract for a pending DungeonRun; activates the run.
     class SelectContractRequestHandler
       def handle(request)
-        error = WebHelpers.check_login(request)
+        error = AresMUSH::WebHelpers.check_login(request)
         return error if error
 
         run = AresMUSH::DungeonRun[request.args[:run_id]]
@@ -282,7 +282,7 @@ module AresMUSH
     # POST: End a DungeonRun (any non-admin player can end).
     class EndDungeonRunRequestHandler
       def handle(request)
-        error = WebHelpers.check_login(request)
+        error = AresMUSH::WebHelpers.check_login(request)
         return error if error
 
         char = request.enactor
@@ -307,7 +307,7 @@ module AresMUSH
     # POST: GM actions on a DungeonRun — doom, threat, progress. Requires admin.
     class DungeonGmActionRequestHandler
       def handle(request)
-        error = WebHelpers.check_login(request)
+        error = AresMUSH::WebHelpers.check_login(request)
         return error if error
 
         return { error: "GM controls require admin access." } unless request.enactor.is_admin?
@@ -358,7 +358,7 @@ module AresMUSH
     # POST: Roll a named move from the Dungeon HUD.
     class HudRollMoveRequestHandler
       def handle(request)
-        error = WebHelpers.check_login(request)
+        error = AresMUSH::WebHelpers.check_login(request)
         return error if error
 
         char      = request.enactor
