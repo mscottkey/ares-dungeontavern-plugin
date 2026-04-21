@@ -7,7 +7,7 @@ module AresMUSH
         return { error: "You must log in." } unless request.enactor
 
         char  = request.enactor
-        scene = AresMUSH::Scene[request.args[:scene_id]]
+        scene = AresMUSH::Scene[request.args[:scene_id] || request.args["scene_id"]]
         return { error: "Scene not found." } unless scene
 
         room = scene.room
