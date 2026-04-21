@@ -7,7 +7,7 @@ module AresMUSH
         return { error: "You must log in." } unless request.enactor
 
         char  = request.enactor
-        scene = AresMUSH::Scene[request.args[:scene_id] || request.args["scene_id"]]
+        scene = AresMUSH::Scene[request.args["scene_id"]]
         return { error: "Scene not found." } unless scene
 
         room = scene.room
@@ -31,7 +31,7 @@ module AresMUSH
         return { error: "You must log in." } unless request.enactor
 
         char  = request.enactor
-        night = AresMUSH::TavernNight[request.args[:night_id]]
+        night = AresMUSH::TavernNight[request.args["night_id"]]
         return { error: "Tavern night not found." }  unless night
         return { error: "Already closed." }          if night.status == "closed"
 
@@ -46,7 +46,7 @@ module AresMUSH
       def handle(request)
         return { error: "You must log in." } unless request.enactor
 
-        night = AresMUSH::TavernNight[request.args[:id]]
+        night = AresMUSH::TavernNight[request.args["id"]]
         return { error: "Tavern night not found." } unless night
 
         DungeonTavern.tavern_night_web_data(night, request.enactor)
@@ -59,14 +59,14 @@ module AresMUSH
         return { error: "You must log in." } unless request.enactor
 
         char  = request.enactor
-        night = AresMUSH::TavernNight[request.args[:night_id]]
+        night = AresMUSH::TavernNight[request.args["night_id"]]
         return { error: "Tavern night not found." } unless night
         return { error: "Tavern night is closed." } unless night.status == "active"
 
         participant = DungeonTavern.find_or_create_tavern_participant(night, char)
         room        = night.room
 
-        case request.args[:action]
+        case request.args["action"]
 
         when "carouse"
           room_name = room ? room.name : ""
@@ -165,7 +165,7 @@ module AresMUSH
         return { error: "You must log in." } unless request.enactor
 
         char = request.enactor
-        lead = AresMUSH::PbtaLead[request.args[:lead_id]]
+        lead = AresMUSH::PbtaLead[request.args["lead_id"]]
         return { error: "Lead not found." }    unless lead
         return { error: "Not your lead." }     unless lead.character_id == char.id
         return { error: "Lead already converted." } unless lead.status == "open"
@@ -217,7 +217,7 @@ module AresMUSH
         return { error: "You must log in." } unless request.enactor
 
         char  = request.enactor
-        scene = AresMUSH::Scene[request.args[:scene_id]]
+        scene = AresMUSH::Scene[request.args["scene_id"]]
         return { error: "Scene not found." } unless scene
 
         room = scene.room
@@ -240,7 +240,7 @@ module AresMUSH
       def handle(request)
         return { error: "You must log in." } unless request.enactor
 
-        run = AresMUSH::DungeonRun[request.args[:id]]
+        run = AresMUSH::DungeonRun[request.args["id"]]
         return { error: "Dungeon run not found." } unless run
 
         DungeonTavern.dungeon_run_web_data(run, request.enactor)
@@ -252,11 +252,11 @@ module AresMUSH
       def handle(request)
         return { error: "You must log in." } unless request.enactor
 
-        run = AresMUSH::DungeonRun[request.args[:run_id]]
+        run = AresMUSH::DungeonRun[request.args["run_id"]]
         return { error: "Dungeon run not found." }   unless run
         return { error: "Run is not pending." }       unless run.status == "pending"
 
-        contract = AresMUSH::DungeonContract[request.args[:contract_id]]
+        contract = AresMUSH::DungeonContract[request.args["contract_id"]]
         return { error: "Contract not found." }       unless contract
         return { error: "Contract is not available." } unless contract.status == "posted"
 
@@ -277,7 +277,7 @@ module AresMUSH
         return { error: "You must log in." } unless request.enactor
 
         char = request.enactor
-        run  = AresMUSH::DungeonRun[request.args[:run_id]]
+        run  = AresMUSH::DungeonRun[request.args["run_id"]]
         return { error: "Dungeon run not found." } unless run
 
         final_status = run.status == "complete" ? "complete" : "failed"
@@ -302,12 +302,12 @@ module AresMUSH
 
         return { error: "GM controls require admin access." } unless request.enactor.is_admin?
 
-        run = AresMUSH::DungeonRun[request.args[:run_id]]
+        run = AresMUSH::DungeonRun[request.args["run_id"]]
         return { error: "Dungeon run not found." } unless run
 
         room = run.room
 
-        case request.args[:action]
+        case request.args["action"]
 
         when "doom"
           doom_data = Engine.advance_doom(run)
@@ -330,7 +330,7 @@ module AresMUSH
           room.emit "%xr[ENVIRONMENTAL THREAT] #{threats.sample}%xn" if room
 
         when "progress"
-          boxes    = (request.args[:boxes] || 1).to_i
+          boxes    = (request.args["boxes"] || 1).to_i
           new_prog = run.progress_boxes.to_i + boxes
           run.update(progress_boxes: new_prog)
           if new_prog >= run.progress_max.to_i
@@ -351,10 +351,10 @@ module AresMUSH
         return { error: "You must log in." } unless request.enactor
 
         char      = request.enactor
-        run       = AresMUSH::DungeonRun[request.args[:run_id]]
+        run       = AresMUSH::DungeonRun[request.args["run_id"]]
         return { error: "Dungeon run not found." } unless run
 
-        move_name   = request.args[:move_name]
+        move_name   = request.args["move_name"]
         move_config = DungeonTavern.find_move(move_name)
         return { error: "No move called '#{move_name}'." }                       unless move_config
         return { error: "'#{move_name}' isn't in your playbook." }               unless DungeonTavern.char_has_move?(char, move_name)
